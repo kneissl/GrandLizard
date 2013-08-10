@@ -183,7 +183,7 @@ class BaseGameMode(game.Mode):
         if self.ball_starting:
             self.game.ball_save.start_lamp()
         else:
-            self.game.set_status('!! Ball Saved !!')
+            pass #self.game.set_status('!! Ball Saved !!')
             
     
     def mode_stopped(self):
@@ -198,15 +198,8 @@ class BaseGameMode(game.Mode):
         self.game.ball_search.disable()
     
     def ball_drained_callback(self):
-        print ('balldrained callback trough balls:' + str(self.game.trough.is_full()))
-        ballAdjust=0
-        if self.game.switches.multiBall3.is_active() and self.game.switches.multiBall2.is_active():
-            ballAdjust = 2
-        elif self.game.switches.multiBall3.is_active():
-            ballAdjust = 1
-        if self.game.trough.num_balls_in_play == ballAdjust:
-            # End the ball
-            self.finish_ball()
+        # End the ball
+        self.finish_ball()
     
     
     def finish_ball(self):
@@ -216,8 +209,8 @@ class BaseGameMode(game.Mode):
             self.layer = None
         
         self.end_ball()
-        print ('Ball:'+str(self.game.ball))
-        self.game.set_status('Ball     ' + str(self.game.ball))
+        #print ('Ball:'+str(self.game.ball))
+        #self.game.set_status('Ball     ' + str(self.game.ball))
        #self.game.alpha_display.display(['  GRAND  LIZARD ', ' 1234567 1234567'])
 
         #self.game.alpha_display.display([' GRAND   LIZARD ', ' 8ALL '+str(self.game.ball)+'  '+str(self.game.current_player().score)])
@@ -279,7 +272,10 @@ class BaseGameMode(game.Mode):
     # Set the switch name to the launch button on your game.
     # If manual plunger, remove the whole section.
     def sw_outhole_active(self, sw):
+        if self.multiball.is_active() and self.game.trough.num_balls_in_play == 1:
+            self.multiball.end_multiball()
         self.game.coils.outhole.pulse(40)
+        self.game.set_status("Trough")
     #    def sw_shooterLane_active(self, sw):
     #        if self.game.switches.shooterR.is_active():
     #            self.game.coils.shooterR.pulse(50)
