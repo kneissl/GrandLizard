@@ -1,0 +1,335 @@
+PRGame:
+    machineType: wpcAlphanumeric
+    numBalls: 3
+PRFlippers:
+    - flipperLwR
+    - flipperLwL
+    - flipperUpR
+    - flipperUpL
+PRBumpers:
+    - leftKicker
+    - rightKicker
+PRSwitches:
+    # **** Format ****
+    # name:
+    #   number: <number>
+    #   type: <type>
+    #
+    #   <number> can be: SFx (Flipper switch, labeled Fx in WPC manual
+    #                    SDx (Dedicated switch, labeled SDx in WPC manual
+    #                    Sx  (Matrix switch, labeled x in WPC manual
+    #   <type> can be: 'NO' (normally open.  This is the default; so no need to use this)
+    #                  'NC' (normally closed.  Common for optos)
+    #
+    flipperLwR:
+        number: S99
+    flipperLwL: 
+        number: S98
+    flipperUpR: 
+        number: S97
+    flipperUpL: 
+        number: S96
+    up:
+        number: SD3
+    down:
+        number: SD2
+    enter:
+        number: SD1
+    exit:
+        number: SD0
+    plubBobTilt:
+        number: S11
+    ballRollTilt:
+        number: S12
+    startButton:
+        number: S13
+    rightCoin:
+        number: S14
+    centerCoin:
+        number: S15
+    leftCoin:
+        number: S16
+    slamTilt:
+        number: S17
+    highScoreReset:
+        number: S18
+    playfieldTilt:
+        number: S21
+    outhole:
+        number: S22
+    shooterLane:
+        number: S23
+    ballTrough1:
+        number: S24
+    ballTrough2:
+        number: S25
+    ballTrough3:
+        number: S26
+    turnaround:
+        number: S27
+    leftReturnLane:
+        number: S28
+    rightReturnLane:
+        number: S31
+    leftOutlane:
+        number: S32
+    rightOutlane:
+        number: S33
+    fourBank1:
+        number: S34
+    fourBank2:
+        number: S35
+    fourBank3:
+        number: S36
+    fourbank4:
+        number: S37
+    topRightStandup:
+        number: S38
+    threeBank1:
+        number: S41
+    threeBank2:
+        number: S42
+    threeBank3:
+        number: S43
+    spinner:
+        number: S44
+    rightRamp:
+        number: S45
+    rightChutetoTop:
+        number: S46
+    leftRamp:
+        number: S47
+    multiBall1:
+        number: S48
+    multiBall2:
+        number: S51
+    multiBall3:
+        number: S52
+    L:
+        number: S53
+    I:
+        number: S54
+    Z:
+        number: S55
+    A:
+        number: S56
+    R:
+        number: S57
+    D:
+        number: S58
+    rightSpecialArrow:
+        number: S61
+    rampTongue:
+        number: S62
+    leftKicker:
+        number: S63
+    rightKicker:
+        number: S64
+    leftMagnet:
+        number: S65
+    rightMagnet:
+        number: S66
+    rFlipperEOS:
+        number: S68
+   
+PRCoils:
+    flipperLwRMain: 
+        number: FLRM
+    flipperLwRHold: 
+        number: FLRH
+    flipperLwLMain: 
+        number: FLLM
+    flipperLwLHold: 
+        number: FLLH
+    flipperUpRMain: 
+        number: FURM
+    flipperUpRHold: 
+        number: FURH
+    flipperUpLMain: 
+        number: FULM
+    flipperUpLHold: 
+        number: FULH
+    outhole: 
+        number: C01
+    threeBank:
+        number: C02
+    fourBank1:
+        number: C03
+    fourBank2:
+        number: C04
+    lockupEject:
+        number: C05
+    lockupFlasher:
+        number: C06
+    leftMagnetFlasher:
+        number: C07
+    ballFeed:
+        number: C08
+    leftMagnet:
+        number: C09
+    rightMagnet:
+        number: C10
+    GIrelay:
+        number: C11
+    threeBankFlasher:
+        number: C12
+    eyesFlasher:
+        number: C13
+    knocker:
+        number: C14
+    bell:
+        number: C15
+    coinLockout:
+        number: C16
+    leftKicker:
+        number: C17
+    rightKicker:
+        number: C18
+    rightMagnetFlasher:
+        number: C19
+    flipperEnable:
+        number: C23
+
+    
+PRLamps:
+    gameOver:
+        number: L11
+    match:
+        number: L12
+    sword1:
+        number: L13
+    sword2:
+        number: L14
+    ballInPlay:
+        number: L15
+    shootAgainBackbox:
+        number: L16
+    twoX:
+        number: L17
+    threeX:
+        number: L18
+    fourX:
+        number: L21
+    fiveX:
+        number: L22
+    tenX:
+        number: L23
+    shootAgain:
+        number: L24
+    one:
+        number: L25
+    two:
+        number: L26
+    three:
+        number: L27
+    four:
+        number: L28
+    five:
+        number: L31
+    six:
+        number: L32
+    seven:
+        number: L33
+    eight:
+        number: L34
+    nine:
+        number: L35
+    ten:
+        number: L36
+    twenty:
+        number: L37
+    extraBall:
+        number: L38
+    all2X:
+        number: L41
+    all3X:
+        number: L42
+    bonusHold:
+        number: L43
+    spinner:
+        number: L44
+    rightRampB:
+        number: L45
+    arrowToTop:
+        number: L46
+    leftRampA:
+        number: L47
+    multiBallLow:
+        number: L48
+    multiBallMid:
+        number: L51
+    multiballTop:
+        number: L52
+    L:
+        number: L53
+    I:
+        number: L54
+    Z:
+        number: L55
+    A:
+        number: L56
+    R:
+        number: L57
+    D:
+        number: L58
+    specialBottom:
+        number: L61
+    leftMagnetLow:
+        number: L62
+    leftMagnetMid:
+        number: L63
+    leftMagnetTop:
+        number: L64
+    rightMagnetLow:
+        number: L65
+    rightMagnetMid:
+        number: L66
+    rightMagnetTop:
+        number: L67
+    rightRampMystery:
+        number: L68
+    leftDrain:
+        number: L71
+    rightDrain:
+        number: L72
+    leftRampMystery:
+        number: L73
+    extraBallBackbox:
+        number: L74
+    turn10K:
+        number: L76
+    turn20K:
+        number: L77
+    turn40K:
+        number: L78
+    bank20K:
+        number: L81
+    bank40K:
+        number: L82
+    bank60K:
+        number: L83
+    bank80K:
+        number: L84
+    bank100L:
+        number: L85
+    topRight50K:
+        number: L86
+    topRightRelease:
+        number: L87
+    bankSpecial:
+        number: L88
+
+PRBallSave:
+    pulseCoils: [ leftKicker, rightKicker, leftMagnet, rightMagnet, threeBank, fourBank1, fourBank2]
+    resetSwitches:
+        leftOutlane: open
+        leftReturnLane: open
+        rightOutlane: open
+        rightReturnLane: open
+        shooterLane: open
+        leftKicker: open
+        rightKicker: open
+    stopSwitches:
+        shooterLane: closed
+        # don't ball search if a flipper button is pressed
+        rFlipperEOS: closed
