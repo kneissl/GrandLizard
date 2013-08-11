@@ -23,7 +23,7 @@ class AlphaScoreDisplay(game.ScoreDisplay):
         self.log = logging.getLogger('grandlizard.alpha_display')
         
         #set the position of the rhs of score for each player
-        self.player_score_posn=[8,17,8,17]
+        self.player_score_posn=[7,17,7,17]
 
         #flag for display text
         self.text_set = False
@@ -77,7 +77,7 @@ class AlphaScoreDisplay(game.ScoreDisplay):
     def format_digit_score(self, score):
     
         if score == 0:
-            return '0'
+            return '00'
         else:
             return locale.format("%d", score, True)
 
@@ -107,10 +107,10 @@ class AlphaScoreDisplay(game.ScoreDisplay):
                 posn = self.player_score_posn[0]+1
             else:
                 posn = self.player_score_posn[0]
-        #add the score as right justified in player 1s posn
-        self.top_text_data[posn-len(score):posn] = score
-        #update the data
-        self.update_alpha_display()
+            #add the score as right justified in player 1s posn
+            self.top_text_data[posn-len(score):posn] = score
+            #update the data
+            self.update_alpha_display()
                         
     def update_layer_4p(self):
         super(AlphaScoreDisplay, self).update_layer_4p()
@@ -168,8 +168,8 @@ class AlphaScoreDisplay(game.ScoreDisplay):
                     posn+=1
                 elif i+posn==8:
                     posn+=1
-                print('i+posn='+ str(i+posn))
-                print('i='+ str(i))
+                #print('i+posn='+ str(i+posn))
+                #print('i='+ str(i))
                 self.top_text_data[i+posn]=text[i]
 
         elif row==1:
@@ -216,12 +216,12 @@ class AlphaScoreDisplay(game.ScoreDisplay):
             #update the data
             self.update_alpha_display()
 
-        if self.blink_flag:
-            clear()
-            self.blink_flag=False
-        else:
-            restore()
-            self.blink_flag=True
+            if self.blink_flag:
+                clear()
+                self.blink_flag=False
+            else:
+                restore()
+                self.blink_flag=True
 
         self.text_blink_repeat = self.delay(delay=num,handler=self.set_text_blink, param=num)
 

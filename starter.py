@@ -53,13 +53,13 @@ class Attract(game.Mode):
         self.game.sound.play_music('background', loops=-1)
         self.game.lampctrl.play_show(self.game.lampshow_keys[1], repeat=True)
         # Blink the start button to notify player about starting a game.
-        self.game.lamps.ballInPlay.schedule(schedule=0x00ff00ff, cycle_seconds=0, now=False)
+        self.game.lamps.gameOver.schedule(schedule=0x00ff00ff, cycle_seconds=0, now=False)
         #self.game.alpha_display.display(['abcdefghijklmnop', '1234567890123456'])
         #self.game.alpha_display.display([' !\'/\*#0 "?&%@$ ', ' 1234567 1234567'])
         #self.game.score_display.test()
         #self.delay(name='locked_balls', event_type=None, delay=2, handler=self.release_balls)
         self.game.score_display.set_ballmatch('11','00')
-        self.game.score_display.set_text("Game  Over",0,justify='center',opaque=True,blink_rate=0,seconds=0)
+        self.game.score_display.set_text("Game  Over",0,justify='center',opaque=True,blink_rate=1,seconds=0)
         print("Trough is full?:" +str(self.game.trough.is_full()))
     # Turn on minimal GI lamps
     # Some games don't have controllable GI's (ie Stern games)
@@ -198,8 +198,11 @@ class BaseGameMode(game.Mode):
         self.game.ball_search.disable()
     
     def ball_drained_callback(self):
+        if self.multiball.is_active() and self.game.trough.num_balls_in_play==1:
+            self.multiball.end_multiball()
         # End the ball
-        self.finish_ball()
+        if self.game.trough.num_balls_in_play == 0:
+            self.finish_ball()
     
     
     def finish_ball(self):
@@ -214,7 +217,7 @@ class BaseGameMode(game.Mode):
        #self.game.alpha_display.display(['  GRAND  LIZARD ', ' 1234567 1234567'])
 
         #self.game.alpha_display.display([' GRAND   LIZARD ', ' 8ALL '+str(self.game.ball)+'  '+str(self.game.current_player().score)])
-        print ('Score:'+str(self.game.current_player().score))
+        self.game.set_status("finishball")
     
     def mode_tick(self):
         pass
@@ -294,7 +297,7 @@ class BaseGameMode(game.Mode):
             #play sound
             #add a display layer and add a delayed removal of it.
             self.game.sound.play('service_exit')
-            self.game.set_status("Tilt  Warning " + str(self.times_warned))
+            self.game.set_status("Tilt  Warn " + str(self.times_warned))
 
     def tilt(self):
         # Process tilt.
@@ -441,6 +444,9 @@ class Game(game.BasicGame):
     # drain_callback can be installed by a gameplay mode.
     def drain_callback(self):
         self.game.coils.outhole.pulse(40)
+    
+    def ball_saved_callback(self):
+        self.game.set_status("*Ball Saved*")
     
     def ball_starting(self):
         super(Game, self).ball_starting()
