@@ -45,30 +45,6 @@ class Multiball(game.Mode):
 
     def mode_tick(self):
         pass
-
-
-    def lock_ball(self):
-        self.game.score(self.lock_ball_score)
-        if self.multiball_running==True:
-            print("lock_ball - multiball")
-            self.eject_lock()
-            return
-        if self.lock_lit==False:
-            print("lock_ball - lock_lit==false")
-            self.eject_lock()
-            return #self.delayed_name = self.delay(delay=0.25, handler=self.eject_lock)
-        
-        if self.balls_locked==2:
-            print("lock_ball balls_locked==2")
-            self.multiball_start()
-            return
-        else:
-            #self.game.set_status("Lock    "+str(self.balls_locked))
-            self.launch_next_ball()
-        self.balls_locked = self.how_many_locked()
-        print ("adjusting balls locked")
-        self.game.trough.num_balls_locked = self.balls_locked
-        self.game.set_player_stats('balls_locked',self.balls_locked)
             
     def launch_next_ball(self):
         self.balls_locked = self.how_many_locked()
@@ -90,10 +66,13 @@ class Multiball(game.Mode):
         #start multiball music
         #self.game.sound.play_music('multiball_play', loops=-1)
         self.balls_locked=0  
+        self.update_lamps()
+        self.lock_lit=False
         self.game.set_player_stats('balls_locked',self.balls_locked)
     
     def ball_drained(self):
-        self.lock_lit = False
+        #print("ball_drained locklit false")
+        #self.lock_lit = False
         self.update_lamps()
     
     def ball_search(self):
@@ -123,14 +102,14 @@ class Multiball(game.Mode):
         if self.multiball_running:
             if status=='lit':
                 self.game.coils.lockupFlasher.disable()
-                self.game.coils.eyesFlasher.schedule(schedule=0x30003000 , cycle_seconds=0, now=True)
+                self.game.coils.eyesFlasher.schedule(schedule=0x30003000 , cycle_seconds=3, now=True)
 
             elif status=='unlit':
-                self.game.coils.lockupFlasher.schedule(schedule=0x30003000 , cycle_seconds=0, now=True)
+                self.game.coils.eyesFlasher.disable()
                 #self.game.coils.divertorHold.disable()
                 #self.game.coils.topLockupHold.disable()
             elif status=='made':
-                self.game.coils.eyesFlasher.disable()
+                self.game.coils.lockupFlasher.schedule(schedule=0x30003000 , cycle_seconds=3, now=True)
                 #self.game.lampctrl.play_show('jackpot', repeat=False,callback=self.game.update_lamps)#self.restore_lamps
 
    #            anim = dmd.Animation().load(game_path+"dmd/lock_animation_"+self.balls_locked+".dmd")
@@ -194,24 +173,51 @@ class Multiball(game.Mode):
     def sw_rightSpecialArrow_active(self, sw):
         if self.multiball_running == False or self.lock_lit == True:
             self.lock_enabled()
+        if self.multiball_running:
+            self.jackpot('lit')
 
     def sw_rampTongue_active(self, sw):
         if self.multiball_running:
-            self.jackpot('lit')
-            self.game.score(50000)
+            self.jackpot('made')
+        else:
+            self.game.score(500)
             
     def sw_multiBall1_active(self, sw):
         # play sound?
-        self.delayed_name = self.delay(delay=0.5, handler=self.lock_ball)
-        
-#    def sw_multiBall1_closed_for_1s(self, sw):
-#            self.eject_lock()       
-        
+        self.delayed_name = self.delay(delay=0.7, handler=self.lock_ball)
+        #    def sw_multiBall1_closed_for_1s(self, sw):
+     #            self.eject_lock()       
+    def lock_ball(self):
+       self.game.score(self.lock_ball_score)
+       if self.multiball_running==True:
+           print("lock_ball - multiball")
+           self.eject_lock()
+           return
+       if self.lock_lit==False:
+           print("lock_ball - lock_lit==false")
+           self.eject_lock()
+           return #self.delayed_name = self.delay(delay=0.25, handler=self.eject_lock)
+       
+       if self.balls_locked==2:
+           print("lock_ball balls_locked==2")
+           self.multiball_start()
+           return
+       else:
+           #self.game.set_status("Lock    "+str(self.balls_locked))
+           self.launch_next_ball()
+       self.balls_locked = self.how_many_locked()
+       print ("adjusting balls locked")
+       self.game.trough.num_balls_locked = self.balls_locked
+       self.game.set_player_stats('balls_locked',self.balls_locked)
+       
     def eject_lock(self, num=1):
-        num-=1
-        self.game.coils.lockupEject.pulse(15)
-        if num>0:
-            self.delated_name = self.delay(delay=0.125, hanlder=self.eject_lock(num))
+        left_to_eject=num-1
+        self.game.coils.lockupEject.pulse(20)
+        wait=0.125
+        while left_to_eject > 0:
+            self.delayed_name = self.delay(delay=wait, handler=self.eject_lock)
+            left_to_eject -= 1
+            wait += 0.125        
         
     def sw_multiBall3_closed_for_1s(self, sw):
         if self.multiball_running == True:
