@@ -329,6 +329,21 @@ PRBallSave:
         shooterLane: open
         leftKicker: open
         rightKicker: open
+        L: open
+        I: open
+        Z: open
+        A: open
+        R: open
+        D: open
+        multiBall1: open
+        topRightStandup: open
+        turnaround: open
+        spinner: open
+        rightRamp: open
+        leftRamp: open
+        rightChutetoTop: open
+        rightSpecialArrow: open
+        
     stopSwitches:
         shooterLane: closed
         # don't ball search if a flipper button is pressed

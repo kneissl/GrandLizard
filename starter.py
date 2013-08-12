@@ -159,7 +159,7 @@ class BaseGameMode(game.Mode):
         self.game.trough.launch_balls(1, self.ball_launch_callback)
         
         # Enable ball search in case a ball gets stuck during gameplay.
-        self.game.ball_search.enable()
+        #self.game.ball_search.enable()
         
         # Reset tilt warnings and status
         self.times_warned = 0;
@@ -200,6 +200,7 @@ class BaseGameMode(game.Mode):
     def ball_drained_callback(self):
         if self.multiball.is_active() and self.game.trough.num_balls_in_play==1:
             self.multiball.end_multiball()
+        self.multiball.ball_drained()
         # End the ball
         if self.game.trough.num_balls_in_play == 0:
             self.finish_ball()
@@ -275,10 +276,10 @@ class BaseGameMode(game.Mode):
     # Set the switch name to the launch button on your game.
     # If manual plunger, remove the whole section.
     def sw_outhole_active(self, sw):
-        if self.multiball.is_active() and self.game.trough.num_balls_in_play == 1:
-            self.multiball.end_multiball()
+
         self.game.coils.outhole.pulse(40)
         self.game.set_status("Trough")
+     #   print ("balls in play" + str(self.game.trough.num_balls_in_play))
     #    def sw_shooterLane_active(self, sw):
     #        if self.game.switches.shooterR.is_active():
     #            self.game.coils.shooterR.pulse(50)
