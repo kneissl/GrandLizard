@@ -9,7 +9,11 @@ import pinproc
 from procgame import *
 from threading import Thread
 from random import *
+from effects import *
 from multiball import *
+from reaganloop import *
+from magnets import *
+from cave import *
 from scoredisplay import AlphaScoreDisplay
 import string
 import time
@@ -175,9 +179,16 @@ class BaseGameMode(game.Mode):
     def add_basic_modes(self):
         
         # High Priority Basic
-        self.multiball = Multiball(self.game, 61)
-        
+        self.effects = effects(self)
+        self.multiball = Multiball(self.game, 60)
+        self.reaganloop = reaganloop(self.game, 35)
+        self.cave = cave(self.game, 37)
+        self.magnets = magnets(self.game, 90)
+        self.game.modes.add(self.effects)
         self.game.modes.add(self.multiball)
+        self.game.modes.add(self.reaganloop)
+        self.game.modes.add(self.cave)
+        self.game.modes.add(self.magnets)
     
     def ball_launch_callback(self):
         if self.ball_starting:
@@ -192,6 +203,10 @@ class BaseGameMode(game.Mode):
         #self.game.enable_flippers(enable=False)
         self.game.coils.flipperEnable.disable()
         self.game.modes.remove(self.multiball)
+        self.game.modes.remove(self.reaganloop)
+        self.game.modes.remove(self.magnets)
+        self.game.modes.remove(self.cave)
+        self.game.modes.remove(self.effects)
         
         # Deactivate the ball search logic son it won't search due to no
         # switches being hit.
@@ -204,7 +219,9 @@ class BaseGameMode(game.Mode):
         # End the ball
         if self.game.trough.num_balls_in_play == 0:
             self.finish_ball()
-    
+            self.reaganloop.reset()
+            self.magnets.reset()
+            self.cave.reset()
     
     def finish_ball(self):
         
@@ -233,36 +250,6 @@ class BaseGameMode(game.Mode):
         if self.game.ball == 1:
             p = self.game.add_player()
             self.game.set_status(p.name + " added")
-            
-    def sw_L_closed(self,sw):
-        self.game.sound.play('3boink')
-        self.game.score(500)
-        return True
-    
-    def sw_I_closed(self,sw):
-        self.game.sound.play('3boink')
-        self.game.score(500)
-        return True
-    
-    def sw_Z_closed(self,sw):
-        self.game.sound.play('3boink')
-        self.game.score(500)
-        return True
-    
-    def sw_A_closed(self,sw):
-        self.game.sound.play('3boink')
-        self.game.score(500)
-        return True
-    
-    def sw_R_closed(self,sw):
-        self.game.sound.play('3boink')
-        self.game.score(500)
-        return True
-
-    def sw_D_closed(self,sw):
-        self.game.sound.play('3boink')
-        self.game.score(500)
-        return True
     
     def sw_shooterLane_open_for_1s(self,sw):
         if self.ball_starting:
@@ -463,9 +450,12 @@ class Game(game.BasicGame):
         self.set_status("Game    Over")
         self.modes.add(self.attract_mode)
     
-    def set_status(self, text):
+    def set_status(self, text, row=0, align='center'):
         #self.dmd.set_message(text, 3)
-        self.score_display.set_text(text,0,justify='center',opaque=True,blink_rate=0,seconds=3)
+        if row==0:
+            self.score_display.set_text(text,0,justify=align,opaque=True,blink_rate=0,seconds=2)
+        else:
+            self.score_display.set_text(text,0,justify=align,opaque=True,blink_rate=0,seconds=2)
         print(text)
     
     def set_player_stats(self,id,value):
@@ -526,6 +516,8 @@ class mpcPlayer(game.Player):
         self.player_stats['monkey_brains_score']=0
         self.player_stats['streets_of_cairo_score']=0
         self.player_stats['steal_the_stones_score']=0
+        self.player_stats['leftClaw']=3
+        self.player_stats['rightClaw']=3
 
 
 

@@ -21,10 +21,13 @@ class reaganloop(game.Mode):
     def __init__(self, game, priority):
         super(reaganloop, self).__init__(game, priority)
         self.log = logging.getLogger('gl.reaganloop')
-        self.lamps = ['indyI','indyN','indyD','indyY']
+        #self.lamps = ['indyI','indyN','indyD','indyY']
+        self.loop_count = 0
+        self.score_amnt = 50
 
     def reset(self):
-        self.reset_lamps()
+        #self.reset_lamps()
+        self.loop_count = 0
         
     def mode_started(self):
         print("Cave mode Started")
@@ -34,10 +37,22 @@ class reaganloop(game.Mode):
     def mode_stopped(self):
         pass
         #save player specific data
+        
+    def update_lamps(self):
+        pass
 
     def mode_tick(self):
         pass
-
+    
+    def sw_rightChutetoTop_active(self, sw):
+        self.loop_count+=1
+        self.game.set_status("REAGAN HOOK")
+        if self.loop_count==1:
+            self.game.set_status(str(self.loop_count) + "   Loop", row=1, align='right')
+        else:
+            self.game.set_status(str(self.loop_count) + "  Loops", row=1, align='right')
+        self.game.score(self.score_amnt*self.loop_count)
+            
     def clear(self):
         self.layer = None
             

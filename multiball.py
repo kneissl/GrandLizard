@@ -142,7 +142,6 @@ class Multiball(game.Mode):
         self.lock_lit = True;
         #self.game.idol.lock_lit=  self.lock_lit
         self.game.set_player_stats('lock_lit',self.lock_lit)
-
         self.update_lamps()
 
     def update_lamps(self):
