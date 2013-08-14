@@ -35,7 +35,7 @@ class cave(game.Mode):
         
     def mode_started(self):
         print("Cave mode Started")
-        #update lamp states
+        self.game.coils.threeBank.pulse(50)  
         self.update_lamps()
         
     def sw_threeBank1_active(self, sw):
