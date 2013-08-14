@@ -179,12 +179,12 @@ class BaseGameMode(game.Mode):
     def add_basic_modes(self):
         
         # High Priority Basic
-        self.effects = effects(self)
+        #self.effects = Effects(self.game)
         self.multiball = Multiball(self.game, 60)
         self.reaganloop = reaganloop(self.game, 35)
         self.cave = cave(self.game, 37)
         self.magnets = magnets(self.game, 90)
-        self.game.modes.add(self.effects)
+        #self.game.modes.add(self.effects)
         self.game.modes.add(self.multiball)
         self.game.modes.add(self.reaganloop)
         self.game.modes.add(self.cave)
@@ -206,7 +206,6 @@ class BaseGameMode(game.Mode):
         self.game.modes.remove(self.reaganloop)
         self.game.modes.remove(self.magnets)
         self.game.modes.remove(self.cave)
-        self.game.modes.remove(self.effects)
         
         # Deactivate the ball search logic son it won't search due to no
         # switches being hit.
@@ -356,6 +355,8 @@ class Game(game.BasicGame):
         self.load_game_data(game_data_template_path, game_data_path)
         
         # Instantiate basic game features
+        self.effects = Effects(self)
+        self.modes.add(self.effects)
         self.attract_mode = Attract(self)
         self.base_game_mode = BaseGameMode(self)
 

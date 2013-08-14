@@ -196,14 +196,14 @@ class magnets(game.Mode):
     def sw_leftMagnet_closed(self, sw):
         if self.leftclaw>0:
             self.game.coils.leftMagnet.enable()
-            self.update_lamps()
             self.leftclaw-=1
+            self.update_lamps()
         
     def sw_rightMagnet_closed(self, sw):
         if self.rightclaw>0:
             self.game.coils.rightMagnet.enable()
-            self.update_lamps()
             self.rightclaw-=1
+            self.update_lamps()
         
     def sw_leftMagnet_open(self, sw):
         self.game.coils.leftMagnet.disable()
