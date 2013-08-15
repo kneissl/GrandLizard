@@ -183,7 +183,8 @@ class Multiball(game.Mode):
             
     def sw_multiBall1_active(self, sw):
         # play sound?
-        self.delayed_name = self.delay(delay=0.7, handler=self.lock_ball)
+        if self.balls_locked<=0:
+            self.delayed_name = self.delay(delay=0.7, handler=self.lock_ball)
         #    def sw_multiBall1_closed_for_1s(self, sw):
      #            self.eject_lock()       
     def lock_ball(self):
@@ -197,8 +198,8 @@ class Multiball(game.Mode):
            self.eject_lock()
            return #self.delayed_name = self.delay(delay=0.25, handler=self.eject_lock)
        
-       if self.balls_locked==2:
-           print("lock_ball balls_locked==2")
+       if self.balls_locked>=2:
+           print("lock_ball balls_locked>=2")
            self.multiball_start()
            return
        else:
@@ -220,10 +221,25 @@ class Multiball(game.Mode):
         
     def sw_multiBall3_closed_for_1s(self, sw):
         if self.multiball_running == True:
-            self.delayed_name = self.delay(delay=0.125, handler=self.eject_lock)
+            self.eject_lock()
         if self.balls_locked<1 and self.lock_lit == False:
-            self.delayed_name = self.delay(delay=0.125, handler=self.eject_lock)
-        
+            self.eject_lock()
+            
+    def sw_multiBall2_closed_for_1s(self, sw):
+        if self.multiball_running == True:
+            self.eject_lock()
+        elif self.balls_locked<2 and self.lock_lit == False:
+            self.eject_lock(num=2)
+        else:
+            self.lock_ball()
+            
+    def sw_multiBall1_closed_for_1s(self, sw):
+        if self.multiball_running == True:
+            self.eject_lock()
+        elif self.balls_locked<3 and self.lock_lit == False:
+            self.eject_lock(num=2)
+        else:
+            self.lock_ball()    
     
     def how_many_locked(self):
         if self.game.switches.multiBall1.is_active():

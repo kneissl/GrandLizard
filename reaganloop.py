@@ -24,9 +24,11 @@ class reaganloop(game.Mode):
         #self.lamps = ['indyI','indyN','indyD','indyY']
         self.loop_count = 0
         self.score_amnt = 50
+        self.chuteTime = 0
 
     def reset(self):
         #self.reset_lamps()
+        self.score_amnt = 0
         self.loop_count = 0
         
     def mode_started(self):
@@ -45,13 +47,16 @@ class reaganloop(game.Mode):
         pass
     
     def sw_rightChutetoTop_active(self, sw):
-        self.loop_count+=1
-        self.game.set_status("REAGAN HOOK")
-        if self.loop_count==1:
-            self.game.set_status(str(self.loop_count) + "   Loop", row=1, align='right')
-        else:
-            self.game.set_status(str(self.loop_count) + "  Loops", row=1, align='right')
-        self.game.score(self.score_amnt*self.loop_count)
+        if (self.game.switches.rightChutetoTop.hw_timestamp-self.chuteTime)>1000:
+            self.loop_count+=1
+            self.game.set_status("REAGAN HOOK")
+            if self.loop_count==1:
+                self.game.set_status(str(self.loop_count) + "   Loop", row=1, align='right')
+            else:
+                self.game.set_status(str(self.loop_count) + "  Loops", row=1, align='right')
+            self.game.score(self.score_amnt*self.loop_count)
+            self.chuteTime = self.game.switches.rightChutetoTop.hw_timestamp
+        print ("chute time:" + str(self.chuteTime))
             
     def clear(self):
         self.layer = None

@@ -30,7 +30,7 @@ game_data_path = game_path +"config/game_data.yaml"
 game_data_template_path = game_path +"config/game_data_template.yaml"
 settings_template_path = game_path +"config/settings_template.yaml"
 #dmd_path = "../../../shared/dmd/"
-sound_path = "../../../shared/sound/"
+sound_path = game_path +"sound/"
 music_path = "../../../shared/music/"
 #font_tiny7 = dmd.font_named("04B-03-7px.dmd")
 #font_jazz18 = dmd.font_named("Jazz18-18px.dmd")
@@ -184,11 +184,15 @@ class BaseGameMode(game.Mode):
         self.reaganloop = reaganloop(self.game, 35)
         self.cave = cave(self.game, 37)
         self.magnets = magnets(self.game, 90)
+        self.lizardhead = lizardhead(self.game, 40)
+        self.bonus = bonus(self.game)
         #self.game.modes.add(self.effects)
         self.game.modes.add(self.multiball)
         self.game.modes.add(self.reaganloop)
         self.game.modes.add(self.cave)
         self.game.modes.add(self.magnets)
+        self.game.modes.add(self.bonus)
+        self.game.modes.add(self.lizardhead)
     
     def ball_launch_callback(self):
         if self.ball_starting:
@@ -206,6 +210,8 @@ class BaseGameMode(game.Mode):
         self.game.modes.remove(self.reaganloop)
         self.game.modes.remove(self.magnets)
         self.game.modes.remove(self.cave)
+        self.game.modes.remove(self.bonus)
+        self.game.modes.remove(self.lizardhead)
         
         # Deactivate the ball search logic son it won't search due to no
         # switches being hit.
@@ -393,6 +399,7 @@ class Game(game.BasicGame):
         self.sound.register_sound('service_switch_edge', sound_path+"switch_edge.wav")
         self.sound.register_sound('service_save', sound_path+"save.wav")
         self.sound.register_sound('service_cancel', sound_path+"cancel.wav")
+        self.sound.register_sound('bonus', sound_path+"bonus.wav")
         self.sound.register_sound('3boink', sound_path+"3bonks.wav")
         #self.service_mode = procgame.service.ServiceMode(self,100,font_tiny7,[])
         

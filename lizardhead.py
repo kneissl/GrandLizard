@@ -22,8 +22,11 @@ class lizardhead(game.Mode):
         super(lizardhead, self).__init__(game, priority)
         self.log = logging.getLogger('gl.lizardhead')
         self.lamps = ['indyI','indyN','indyD','indyY']
+        self.ramp_count = 0
+        self.chuteTime = 0
 
     def reset(self):
+        self.ramp_count = 0
         self.reset_lamps()
         
     def mode_started(self):
@@ -40,6 +43,14 @@ class lizardhead(game.Mode):
 
     def clear(self):
         self.layer = None
+        
+    def sw_rampTongue_active(self, sw):
+        if (self.game.switches.rightChutetoTop.hw_timestamp-self.chuteTime)>500:
+            self.ramp_count+=1
+            self.game.set_status("RAMP Count")
+            self.game.set_status(str(self.ramp_count), row=1, align='left')
+            self.game.score(self.score_amnt)
+            self.chuteTime = self.game.switches.rightChutetoTop.hw_timestamp
             
     def reset_lamps(self):
         for i in range(len(self.lamps)):

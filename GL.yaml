@@ -81,7 +81,7 @@ PRSwitches:
         number: S35
     fourBank3:
         number: S36
-    fourbank4:
+    fourBank4:
         number: S37
     topRightStandup:
         number: S38
