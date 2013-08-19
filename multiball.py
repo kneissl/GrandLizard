@@ -109,7 +109,9 @@ class Multiball(game.Mode):
                 #self.game.coils.divertorHold.disable()
                 #self.game.coils.topLockupHold.disable()
             elif status=='made':
-                self.game.coils.lockupFlasher.schedule(schedule=0x30003000 , cycle_seconds=3, now=True)
+                self.game.set_status("JACK POT")
+                self.game.coils.eyesFlasher.schedule(schedule=0x30003000 , cycle_seconds=3, now=True)
+                self.game.coils.bell.schedule(schedule=0xFF00FF00 , cycle_seconds=3, now=True)
                 #self.game.lampctrl.play_show('jackpot', repeat=False,callback=self.game.update_lamps)#self.restore_lamps
 
    #            anim = dmd.Animation().load(game_path+"dmd/lock_animation_"+self.balls_locked+".dmd")
@@ -122,7 +124,7 @@ class Multiball(game.Mode):
                 self.game.score(self.jackpot_value*self.jackpot_x)
                 self.jackpot_collected+=1
                 #self.game.effects.drive_lamp(self.jackpot_lamps[self.jackpot_collected],'smarton')
-                if self.jackpot_collected==3:
+                if self.jackpot_collected>3:
                     self.super_jackpot()
                 else:
                     self.delay(name='reset_jackpot', event_type=None, delay=1, handler=self.jackpot, param='unlit')
@@ -134,7 +136,8 @@ class Multiball(game.Mode):
                 #self.game.coils.topLockupHold.disable()
                 
     def super_jackpot(self):
-        self.game.coils.flasherSuperJackpot.schedule(schedule=0x30003000 , cycle_seconds=0, now=True)
+        self.game.set_status("SUPER  JACKPOT")
+        self.game.coils.bell.schedule(schedule=0xFFFFFFF0 , cycle_seconds=4, now=True)
         self.super_jackpot_enabled = True
 
     def lock_enabled(self):
@@ -156,6 +159,10 @@ class Multiball(game.Mode):
             self.game.lamps.multiBallMid.disable()
             self.game.lamps.multiBallTop.disable()
             #self.game.effects.drive_lamp('multiBallLow','off')
+        if self.balls_locked>0:
+            self.game.effects.drive_lamp(lamp_name='topRightRelease',style='superfast')
+        else:
+            self.game.effects.drive_lamp(lamp_name='topRightRelease',style='off')
             
     def delayed_clear(self,timer=2):
         self.delay(name='clear_delay', event_type=None, delay=timer, handler=self.clear)

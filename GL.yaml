@@ -310,7 +310,7 @@ PRLamps:
         number: L83
     bank80K:
         number: L84
-    bank100L:
+    bank100K:
         number: L85
     topRight50K:
         number: L86

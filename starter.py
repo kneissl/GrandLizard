@@ -14,6 +14,8 @@ from multiball import *
 from reaganloop import *
 from magnets import *
 from cave import *
+from lizardhead import *
+from bonus import *
 from scoredisplay import AlphaScoreDisplay
 import string
 import time
@@ -185,7 +187,7 @@ class BaseGameMode(game.Mode):
         self.cave = cave(self.game, 37)
         self.magnets = magnets(self.game, 90)
         self.lizardhead = lizardhead(self.game, 40)
-        self.bonus = bonus(self.game)
+        self.bonus = bonus(self.game, 20)
         #self.game.modes.add(self.effects)
         self.game.modes.add(self.multiball)
         self.game.modes.add(self.reaganloop)
@@ -270,7 +272,7 @@ class BaseGameMode(game.Mode):
     def sw_outhole_active(self, sw):
 
         self.game.coils.outhole.pulse(40)
-        self.game.set_status("Trough")
+        #self.game.set_status("Trough")
      #   print ("balls in play" + str(self.game.trough.num_balls_in_play))
     #    def sw_shooterLane_active(self, sw):
     #        if self.game.switches.shooterR.is_active():
@@ -463,9 +465,12 @@ class Game(game.BasicGame):
         if row==0:
             self.score_display.set_text(text,0,justify=align,opaque=True,blink_rate=0,seconds=2)
         else:
-            self.score_display.set_text(text,0,justify=align,opaque=True,blink_rate=0,seconds=2)
+            self.score_display.set_text(text,1,justify=align,opaque=True,blink_rate=0,seconds=2)
         print(text)
     
+    def run_modecall(self, mode_name, call_name):
+        self[mode_name][call_name]()
+        
     def set_player_stats(self,id,value):
             p = self.current_player()
             p.player_stats[id]=value

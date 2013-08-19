@@ -32,7 +32,7 @@ class reaganloop(game.Mode):
         self.loop_count = 0
         
     def mode_started(self):
-        print("Cave mode Started")
+        print("Reagan loop mode Started")
         #update lamp states
         self.update_lamps()
     
@@ -56,7 +56,7 @@ class reaganloop(game.Mode):
                 self.game.set_status(str(self.loop_count) + "  Loops", row=1, align='right')
             self.game.score(self.score_amnt*self.loop_count)
             self.chuteTime = self.game.switches.rightChutetoTop.hw_timestamp
-        print ("chute time:" + str(self.chuteTime))
+        print ("chute time:" + str(self.game.switches.rightChutetoTop.hw_timestamp))
             
     def clear(self):
         self.layer = None

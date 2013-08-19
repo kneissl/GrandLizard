@@ -43,6 +43,7 @@ class magnets(game.Mode):
         self.R=False
         self.D=False
         self.reset_lamps()
+        self.update_lamps()
         
     def mode_started(self):
         print("Magnet mode Started")

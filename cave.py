@@ -5,6 +5,7 @@ import procgame
 import locale
 import logging
 import random
+import time
 
 from procgame import *
 #from hand_of_fate import *
@@ -22,8 +23,10 @@ class cave(game.Mode):
         super(cave, self).__init__(game, priority)
         self.log = logging.getLogger('gl.cave')
         self.lamps = ['turn10K','turn20K','turn40K']
+        self.topBankLamps = ['bank20K', 'bank40K', 'bank60K', 'bank80K', 'bank100K']
         self.cave_combo = ['turnaround','topRightStandup']
         
+        self.rotateLamp = 0
         self.cave_value = 500
         self.caves_explored = 0
         self.droptarget_points = 350
@@ -35,16 +38,31 @@ class cave(game.Mode):
         self.droptarget_points = 350
         self.caves_explored = 0
         self.game.coils.threeBank.pulse(50)
-        self.game.coils.fourBank1.pulse(50)
-        self.game.coils.fourBank2.pulse(50)  
+        self.game.coils.fourBank1.pulse(100)
+        self.game.coils.fourBank2.pulse(100)  
         self.reset_lamps()
         
     def mode_started(self):
         print("Cave mode Started")
         self.game.coils.threeBank.pulse(50)
-        self.game.coils.fourBank1.pulse(50)
-        self.game.coils.fourBank2.pulse(50)
+        self.game.coils.fourBank1.pulse(100)
+        self.game.coils.fourBank2.pulse(100)
         self.update_lamps()
+        self.delayed_name = self.delay(delay=1, handler=self.move_light)
+    
+    def move_light(self):
+        self.rotateLamp+=1
+        if self.rotateLamp>=5:
+            self.rotateLamp=0
+        self.update_lamps()
+        self.delay_move = self.delay(delay=1, handler=self.move_light)
+        
+    def update_lamps(self):
+        for i in range(len(self.topBankLamps)):
+            if i == self.rotateLamp:
+                self.game.effects.drive_lamp(self.topBankLamps[i],'fast')
+            else:
+                self.game.effects.drive_lamp(self.topBankLamps[i],'off')
         
     def sw_threeBank1_active(self, sw):
         self.combo_on=False
@@ -68,10 +86,16 @@ class cave(game.Mode):
             self.game.coils.threeBank.pulse(50)
             
     def sw_topRightStandup_active(self, sw):
-        if self.combo_on==True and (self.game.current_player().game_time-self.gametime)<2:
-            self.game.set_status("*CAVE  COMBO*")
-            self.game.sound.play('bonus')
-            self.game.score(self.cave_value*3)
+        if self.combo_on==True and (time.time()-self.gametime)<2:
+            if self.game.trough.num_balls_in_play>1:
+                self.game.set_status("SUPER JACKPOT")
+                self.game.run_modecall('multiball','super_jackpot')
+            else:
+                self.game.set_status("*CAVE  COMBO*")
+                self.game.sound.play('bonus')
+                self.game.score(self.cave_value*3)
+                print ("saved time:" + str(self.gametime))
+                print ("game time:" + str(self.game.current_player().game_time))
             
             
             
@@ -88,7 +112,7 @@ class cave(game.Mode):
         self.combo_on=False
   
     def sw_turnaround_active(self, sw):
-        self.gametime=self.game.current_player().game_time
+        self.gametime=time.time()
         self.combo_on=True
         self.game.score(self.cave_value)
         self.caves_explored += 1
