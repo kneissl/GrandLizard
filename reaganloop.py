@@ -49,7 +49,7 @@ class reaganloop(game.Mode):
     def sw_rightChutetoTop_active(self, sw):
         if (self.game.switches.rightChutetoTop.hw_timestamp-self.chuteTime)>1000:
             self.loop_count+=1
-            self.game.set_status("REAGAN HOOK")
+            self.game.set_status("RIGHT  HOOK")
             if self.loop_count==1:
                 self.game.set_status(str(self.loop_count) + "   Loop", row=1, align='right')
             else:

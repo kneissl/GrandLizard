@@ -56,7 +56,7 @@ class Attract(game.Mode):
     
     def mode_started(self):
         self.game.sound.register_music('background', music_path+"congas.WAV")
-        self.game.sound.play_music('background', loops=-1)
+        #self.game.sound.play_music('background', loops=-1)
         self.game.lampctrl.play_show(self.game.lampshow_keys[1], repeat=True)
         # Blink the start button to notify player about starting a game.
         self.game.lamps.gameOver.schedule(schedule=0x00ff00ff, cycle_seconds=0, now=False)

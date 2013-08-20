@@ -51,7 +51,7 @@ class bonus(game.Mode):
         if self.bonus_value>=20:
             for i in range(2):
                 self.game.effects.drive_lamp(self.tenslamps[i],'on')
-            for i in range(self.bonus_value-10):
+            for i in range(self.bonus_value-20):
                 self.game.effects.drive_lamp(self.singleslamps[i],'on')
         for i in range(self.multiplier-1): # must be less than 5
             self.game.effects.drive_lamp(self.multiplierlamps[i],'on')
